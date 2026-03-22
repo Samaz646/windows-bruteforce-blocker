@@ -51,3 +51,8 @@ Key settings in the script:
 MAX_ATTEMPTS = 5
 TIME_WINDOW_MINUTES = 5
 CHECK_INTERVAL_SECONDS = 30
+
+## Optional Telegram integration via environment variables:
+
+set TELEGRAM_TOKEN=your_token
+set TELEGRAM_CHAT_ID=your_chat_id
