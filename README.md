@@ -3,32 +3,33 @@
 ## Overview
 This script monitors failed RDP login attempts in the Windows Security Event Log and automatically blocks offending IP addresses using Windows Firewall.
 
-It is intended for Windows systems where repeated failed login attempts should trigger an automated response.
+It is designed for Windows systems where repeated failed login attempts should trigger an automated response.
 
 ---
 
 ## Features
 
-- Detects failed RDP login attempts from the Windows Security log
-- Counts repeated failures within a defined time window
-- Blocks offending IPs via Windows Firewall
-- Avoids duplicate firewall rules for already blocked IPs
-- Logs all actions to rotating log files
-- Stores simple quarantine records for blocked IPs
+- Detects failed login attempts (Event ID 4625)
+- Time-based threshold detection
+- Automatic firewall blocking
+- Simple IP whitelist support
+- Logging with daily rotation
+- Quarantine logging for blocked IPs
 - Optional Telegram notifications
 
 ---
 
 ## How It Works
 
-The script reads recent Windows Security events and looks for failed login events (`Event ID 4625`).
+The script reads recent Security Event Log entries and counts failed login attempts per IP.
 
-If an IP address exceeds the configured threshold within the defined time window, the script:
+If an IP exceeds the configured threshold within a time window:
 
-1. checks whether the IP is already blocked
-2. creates a Windows Firewall block rule
-3. writes a quarantine log entry
-4. optionally sends a Telegram notification
+1. It checks if the IP is whitelisted
+2. It checks if the IP is already blocked
+3. It creates a firewall rule to block the IP
+4. It logs the action
+5. Optionally sends a Telegram notification
 
 ---
 
@@ -39,23 +40,12 @@ If an IP address exceeds the configured threshold within the defined time window
 - `pywin32`
 - `requests`
 - Administrative privileges
-- Access to the Windows Security Event Log
-- Permission to create Windows Firewall rules
 
 ---
 
 ## Configuration
 
-Main configuration values in the script:
-
-- `MAX_ATTEMPTS`
-- `TIME_WINDOW_MINUTES`
-- `CHECK_INTERVAL_SECONDS`
-- `LOG_DIR`
-- `TELEGRAM_TOKEN`
-- `TELEGRAM_CHAT_ID`
-
-Example:
+Key settings in the script:
 
 ```python
 MAX_ATTEMPTS = 5
